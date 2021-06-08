@@ -337,11 +337,6 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
     }
 
     @Override
-    public ChannelProgressivePromise newProgressivePromise() {
-        return new DefaultChannelProgressivePromise(this, eventLoop);
-    }
-
-    @Override
     public ChannelFuture newSucceededFuture() {
         return succeedFuture;
     }
