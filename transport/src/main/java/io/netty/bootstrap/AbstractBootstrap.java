@@ -268,6 +268,15 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         return doBind(ObjectUtil.checkNotNull(localAddress, "localAddress"));
     }
 
+    /**
+     *  Netty 的 main reactor 大多数只用到一个线程，而不是一个线程组
+     *  这是因为main reactor 绑定channel到group在initAndRegister方法中，而上级调用方法doBind
+     *  doBind绑定一个地址和端口把服务器给启动起来，对于我们服务器来说，我们一般只会绑定一个地址和端口
+     *  所以只会调用一次，所以只会用到一个元素
+     *
+     * @param localAddress
+     * @return
+     */
     private ChannelFuture doBind(final SocketAddress localAddress) {
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
@@ -303,6 +312,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return promise;
         }
     }
+
 
     final ChannelFuture initAndRegister() {
         Channel channel = null;
