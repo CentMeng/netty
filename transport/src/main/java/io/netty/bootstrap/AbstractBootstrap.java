@@ -319,7 +319,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             // as the Channel is not registered yet we need to force the usage of the GlobalEventExecutor
             return new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE).setFailure(t);
         }
-
+        //开始register
+        // 主从多线程Reactor：拿到了group然后将channel绑定进去，完成了绑定关系
+        // 此处channel在服务器开发中是指ServerSocketChannel，ServerSocketChannel是只监听OP_ACCEPT事件，所以此处channel是主，这里就是将ServerSocketChannel绑定到了bossGroup，这个ServerSocketChannel就可以帮忙创建子SocketChannel，然后把子的SocketChannel绑定到workerGroup
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
