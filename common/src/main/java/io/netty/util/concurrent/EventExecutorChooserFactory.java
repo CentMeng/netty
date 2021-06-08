@@ -36,6 +36,9 @@ public interface EventExecutorChooserFactory {
 
         /**
          * Returns the new {@link EventExecutor} to use.
+         *  Channel 分配 NIO event loop ，策略模式，有两个实现
+         *  一个是GenericEventExecutorChooser 比较简单就是递增，根据线程数取模
+         *  一个是PowerOfTwoEventExecutorChooser 根据待绑定的executor是否是2的幂次方，作出不同选择。executors总数必须是2的幂次方（2，4，8...）才会用，因为&运算效率更高
          */
         EventExecutor next();
     }
