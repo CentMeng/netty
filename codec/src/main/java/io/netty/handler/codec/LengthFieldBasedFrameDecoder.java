@@ -15,15 +15,13 @@
  */
 package io.netty.handler.codec;
 
-import static io.netty.util.internal.ObjectUtil.checkNotNull;
-import static io.netty.util.internal.ObjectUtil.checkPositive;
-import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.nio.ByteOrder;
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
+import static io.netty.util.internal.ObjectUtil.*;
 
 /**
  * A decoder that splits the received {@link ByteBuf}s dynamically by the
@@ -64,9 +62,9 @@ import io.netty.channel.ChannelHandlerContext;
  * specified <tt>2</tt>, that is same with the length of the length field, to
  * strip the first two bytes.
  * <pre>
- * lengthFieldOffset   = 0
- * lengthFieldLength   = 2
- * lengthAdjustment    = 0
+ * lengthFieldOffset   = 0  起始移动位数
+ * lengthFieldLength   = 2  长度
+ * lengthAdjustment    = 0  实际长度需要增加的位数
  * <b>initialBytesToStrip</b> = <b>2</b> (= the length of the Length field)
  *
  * BEFORE DECODE (14 bytes)         AFTER DECODE (12 bytes)
@@ -183,6 +181,7 @@ import io.netty.channel.ChannelHandlerContext;
  * +------+--------+------+----------------+      +------+----------------+
  * </pre>
  * @see LengthFieldPrepender
+ * netty常用三种封帧方式--固定长度字段存个内容的长度信息
  */
 public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
 
